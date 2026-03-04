@@ -1,5 +1,6 @@
 ﻿using Deviot.Common;
 using Microsoft.AspNetCore.Mvc;
+using Project.Domain.Common;
 using Project.Domain.Exceptions;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
@@ -47,76 +48,18 @@ namespace Project.Api.Bases
             };
         }
 
-        protected ActionResult CustomResponse(object value = null, object meta = null, HttpStatusCode httpStatusCode = HttpStatusCode.OK, List<string> messages = null, bool success = true)
+        protected ActionResult CustomResponse(Result result)
         {
-            messages ??= new List<string>();
-
-            if (_notifier.HasNotifications)
-            {
-                var notifies = _notifier.GetNotifications();
-
-                if (notifies.Any(x => x.Type == HttpStatusCode.Unauthorized))
-                {
-                    httpStatusCode = HttpStatusCode.Unauthorized;
-                    messages.Add(notifies.First(x => x.Type == HttpStatusCode.Unauthorized).Message);
-                }
-                else if (notifies.Any(x => x.Type == HttpStatusCode.InternalServerError))
-                {
-                    httpStatusCode = HttpStatusCode.InternalServerError;
-                    messages.Add(notifies.First(x => x.Type == HttpStatusCode.InternalServerError).Message);
-                }
-                else if (notifies.Any(x => x.Type == HttpStatusCode.NotFound))
-                {
-                    httpStatusCode = HttpStatusCode.NotFound;
-                    messages.Add(notifies.First(x => x.Type == HttpStatusCode.NotFound).Message);
-                }
-                else if (notifies.Any(x => x.Type == HttpStatusCode.Forbidden))
-                {
-                    httpStatusCode = HttpStatusCode.Forbidden;
-                    messages.Add(notifies.First(x => x.Type == HttpStatusCode.Forbidden).Message);
-                }
-                else if (notifies.Any(x => x.Type == HttpStatusCode.BadRequest))
-                {
-                    httpStatusCode = HttpStatusCode.BadRequest;
-                    foreach (var notify in notifies.Where(x => x.Type == HttpStatusCode.BadRequest))
-                        messages.Add(notify.Message);
-                }
-                else if (notifies.Any(x => x.Type == HttpStatusCode.NoContent))
-                {
-                    httpStatusCode = HttpStatusCode.NoContent;
-                    messages.Add(notifies.First(x => x.Type == HttpStatusCode.NoContent).Message);
-                }
-                else if (notifies.Any(x => x.Type == HttpStatusCode.Created))
-                {
-                    httpStatusCode = HttpStatusCode.Created;
-                    messages.Add(notifies.First(x => x.Type == HttpStatusCode.Created).Message);
-                }
-                else if (notifies.Any(x => x.Type == HttpStatusCode.OK))
-                {
-                    httpStatusCode = HttpStatusCode.OK;
-                    messages.Add(notifies.First(x => x.Type == HttpStatusCode.OK).Message);
-                }
-                else
-                {
-                    httpStatusCode = HttpStatusCode.InternalServerError;
-                    messages.Add(INTERNAL_SERVER_ERROR_MESSAGE);
-                }
-                _notifier.Clear();
-            }
-            else if (success)
-            {
-                messages.Add(OK_MESSAGE);
-            }
-
             var response = new
             {
-                Success = success,
-                Messages = messages,
-                Data = value,
-                Meta = meta
+                Success = result.Success,
+                Messages = result.Success
+                    ? new List<string> { "Operação realizada com sucesso" }
+                    : new List<string> { result.Message },
+                Data = result.Data
             };
 
-            return new ObjectResult(response) { StatusCode = (int)httpStatusCode };
+            return new ObjectResult(response) { StatusCode = (int)result.StatusCode };
         }
 
         protected ActionResult ReturnActionResultForValidationError(ObjectValidationException exception)

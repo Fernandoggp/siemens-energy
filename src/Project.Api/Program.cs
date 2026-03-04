@@ -1,63 +1,50 @@
-using Project.Api;
-using Serilog;
-using Serilog.Sinks.Grafana.Loki;
-using Serilog.Sinks.SystemConsole.Themes;
-using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
+using Project.Api.Configurations;
+using Project.Repository.Persistence;
+using Asp.Versioning;
 
-namespace Project.api
-{
-    [ExcludeFromCodeCoverage]
-    public class Program
+var builder = WebApplication.CreateBuilder(args);
+
+// ===========================
+// DATABASE (EF Core)
+// ===========================
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnection"))
+);
+
+// ===========================
+// API VERSIONING + EXPLORER
+// ===========================
+builder.Services
+    .AddApiVersioning(options =>
     {
-        public static void Main(string[] args)
-        {
-            Log.Logger = new LoggerConfiguration()
-              .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Information)
-              .Enrich.FromLogContext()
-              .CreateLogger();
+        options.AssumeDefaultVersionWhenUnspecified = true;
+        options.DefaultApiVersion = new ApiVersion(1, 0);
+        options.ReportApiVersions = true;
+    })
+    .AddApiExplorer(options =>
+    {
+        options.GroupNameFormat = "'v'V";
+        options.SubstituteApiVersionInUrl = true;
+    });
 
-            try
-            {
-                Log.Information("Staring the Host");
-                CreateHostBuilder(args).Build().Run();
-            }
-            catch (Exception ex)
-            {
-                Log.Fatal(ex, "Host Terminated Unexpectedly");
-            }
+// ===========================
+// DEPENDENCY INJECTION
+// ===========================
+builder.Services.AddDependencyInjectionConfiguration(builder.Configuration);
 
-            finally
-            {
-                Log.CloseAndFlush();
-            }
-        }
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-          .UseSerilog((ctx, cfg) =>
-          {
-              var application = Environment.GetEnvironmentVariable("APPLICATION_NAME");
-              var lokiUrl = Environment.GetEnvironmentVariable("LOKI_URL");
+var app = builder.Build();
 
-              if (string.IsNullOrEmpty(application))
-                  application = ctx.HostingEnvironment.ApplicationName;
+app.UseSwagger();
+app.UseSwaggerUI();
 
-              if (string.IsNullOrEmpty(lokiUrl))
-                  lokiUrl = "http://localhost:3100";
+app.UseHttpsRedirection();
+app.UseAuthorization();
 
-              var lokiLabels = new List<LokiLabel> { new LokiLabel { Key = "job", Value = application } };
+app.MapControllers();
 
-              // Para adicionar o correlationId nos logs precisa habilitar na classe ApiConfig
-              // o services.AddHttpContextAccessor();
-              cfg.Enrich.WithProperty("Application", application);
-              cfg.Enrich.WithCorrelationId();
-              cfg.Enrich.WithCorrelationIdHeader("X-Correlation-Id");
-              cfg.WriteTo.Console(theme: AnsiConsoleTheme.Code);
-              cfg.WriteTo.GrafanaLoki(lokiUrl, lokiLabels);
-          })
-          .ConfigureWebHostDefaults(webBuilder =>
-          {
-              webBuilder.UseStartup<Startup>();
-          });
-    }
-}
+app.Run();

@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Logging;
 using Project.Api.Configurations;
 using Project.Application.Configurations;
-using System.Data;
-using Npgsql;
-using Microsoft.Extensions.DependencyInjection;
+using Project.Domain.Interfaces.Repositories.Autor;
+using Project.Infrastructure.Persistence.Repositories;
+using Project.Repository.Persistence;
 
 namespace Project.Api
 {
@@ -15,10 +15,10 @@ namespace Project.Api
         public Startup(IHostEnvironment hostEnvironment)
         {
             var builder = new ConfigurationBuilder()
-              .SetBasePath(hostEnvironment.ContentRootPath)
-              .AddJsonFile("appsettings.json", true, true)
-              .AddJsonFile($"appsettings.{hostEnvironment.EnvironmentName}.json", true, true)
-              .AddEnvironmentVariables();
+                .SetBasePath(hostEnvironment.ContentRootPath)
+                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile($"appsettings.{hostEnvironment.EnvironmentName}.json", true, true)
+                .AddEnvironmentVariables();
 
             Configuration = builder.Build();
         }
@@ -27,13 +27,12 @@ namespace Project.Api
         {
             IdentityModelEventSource.ShowPII = true;
 
-            var signingConfigurations = new SigningConfigurations(Configuration);
-            services.AddSingleton(signingConfigurations);
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseNpgsql(
+                    Configuration["ConnectionStrings:DefaultConnection"]
+                ));
 
-            var tokenConfigurations = new TokenConfigurations();
-            new ConfigureFromConfigurationOptions<TokenConfigurations>(Configuration.GetSection("JwtSettings")).Configure(tokenConfigurations);
-            services.AddSingleton(tokenConfigurations);
-            services.AddJwtSecurity(signingConfigurations, tokenConfigurations);
+            services.AddScoped<IAutorRepository, AutorRepository>();
 
             services.AddControllers()
                 .AddJsonOptions(options =>
@@ -45,24 +44,18 @@ namespace Project.Api
 
             services.AddHttpContextAccessor();
 
-            // Dependency injection config
             services.AddDependencyInjectionConfiguration(Configuration);
-            services.AddDependencyInjectionApplication(Configuration);
+            services.AddDependencyInjectionApplication();
+
             services.AddSingleton<IConfiguration>(Configuration);
-            services.AddSingleton<HttpClientWrapper>();
             services.AddSingleton<HttpClient>();
 
-            // Api - Configuration
             services.AddApiConfiguration(Configuration);
-
-            // Versionamento
             services.AddVersioningConfiguration();
-
-            // Swagger config
             services.AddSwaggerConfiguration();
         }
 
-        public static void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
         {
             app.UseCors(builder =>
             {

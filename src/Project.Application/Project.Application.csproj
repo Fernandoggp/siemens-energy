@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Dtos\CreateAccountOnErpDto.cs" />
-    <Compile Remove="Dtos\ReadFileDto.cs" />
-    <Compile Remove="Dtos\UploadFilesDto.cs" />
+    <Compile Remove="Inputs\**" />
+    <EmbeddedResource Remove="Inputs\**" />
+    <None Remove="Inputs\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,9 +26,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Project.Domain\Project.Domain.csproj" />
     <ProjectReference Include="..\Project.Repository\Project.Repository.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Inputs\" />
   </ItemGroup>
 </Project>
