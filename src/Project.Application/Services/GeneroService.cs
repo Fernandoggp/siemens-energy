@@ -66,7 +66,17 @@ namespace Project.Application.Services
             var genero = await _generoRepository.DeleteGeneroByIdAsync(id);
 
             if (genero is false)
-                return Result.Fail("Genero não encontrado na base de dados para atualização.", System.Net.HttpStatusCode.NotFound);
+                return Result.Fail("Genero não encontrado na base de dados para deleção.", System.Net.HttpStatusCode.NotFound);
+
+            return Result.Ok(genero);
+        }
+
+        public async Task<Result> GetGeneroByIdAsync(Guid id)
+        {
+            var genero = await _generoRepository.GetGeneroByIdAsync(id);
+
+            if (genero is null)
+                return Result.Fail("Genero não encontrado na base de dados.", System.Net.HttpStatusCode.NotFound);
 
             return Result.Ok(genero);
         }

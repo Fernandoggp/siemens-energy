@@ -62,5 +62,13 @@ namespace Project.Infrastructure.Persistence.Repositories
             return true;
         }
 
+        public async Task<GeneroEntity> GetGeneroByIdAsync(Guid id)
+        {
+            var genero = await _context.Generos
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            return genero;
+        }
+
     }
 }

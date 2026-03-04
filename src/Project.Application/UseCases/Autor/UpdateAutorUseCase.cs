@@ -17,14 +17,14 @@ namespace Project.Application.UseCases.Autor
             _autorService = autorService;
         }
 
-        public async Task<Result> ExecuteAsync(AutorEntity Autor)
+        public async Task<Result> ExecuteAsync(AutorEntity autor)
         {
-            var validationResult = await _autorService.ValidateNameAsync(Autor.Name);
+            var validationResult = await _autorService.ValidateNameAsync(autor.Name);
 
             if (!validationResult.Success)
                 return validationResult;
 
-            return await _autorService.UpdateAutorAsync(Autor);
+            return await _autorService.UpdateAutorAsync(autor);
         }
 
     }

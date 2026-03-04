@@ -8,7 +8,8 @@ namespace Project.Domain.Interfaces.Services
         Task<Result> ValidateNameAsync(string name);
         Task<Result> CreateGeneroAsync(GeneroEntity newGenero);
         Task<Result> GetAllGenerosAsync();
-        Task<Result> UpdateGeneroAsync(GeneroEntity Genero);
+        Task<Result> UpdateGeneroAsync(GeneroEntity genero);
         Task<Result> DeleteGeneroByIdAsync(Guid id);
+        Task<Result> GetGeneroByIdAsync(Guid id);
     }
 }
