@@ -11,5 +11,6 @@ namespace Project.Repository.Persistence
         }
 
         public DbSet<AutorEntity> Autores { get; set; }
+        public DbSet<GeneroEntity> Generos { get; set; }
     }
 }

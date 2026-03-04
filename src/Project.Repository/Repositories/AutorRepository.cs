@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Project.Domain.Entities;
-using Project.Domain.Interfaces.Repositories.Autor;
+using Project.Domain.Interfaces.Repositories;
 using Project.Repository.Persistence;
 
 namespace Project.Infrastructure.Persistence.Repositories

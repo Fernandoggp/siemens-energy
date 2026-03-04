@@ -2,7 +2,7 @@
 using Microsoft.IdentityModel.Logging;
 using Project.Api.Configurations;
 using Project.Application.Configurations;
-using Project.Domain.Interfaces.Repositories.Autor;
+using Project.Domain.Interfaces.Repositories;
 using Project.Infrastructure.Persistence.Repositories;
 using Project.Repository.Persistence;
 

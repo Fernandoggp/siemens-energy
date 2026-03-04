@@ -1,6 +1,6 @@
 ﻿using Project.Domain.Entities;
 
-namespace Project.Domain.Interfaces.Repositories.Autor
+namespace Project.Domain.Interfaces.Repositories
 {
     public interface IAutorRepository
     {

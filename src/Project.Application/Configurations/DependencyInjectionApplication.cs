@@ -2,9 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using Project.Application.UseCases;
 using Project.Domain.Interfaces.UseCases.Autor;
-using Project.Domain.Interfaces.Services.Autor;
 using Project.Application.Services;
 using Project.Application.UseCases.Autor;
+using Project.Application.UseCases.Genero;
+using Project.Domain.Interfaces.Services;
+using Project.Domain.Interfaces.UseCases.Genero;
 
 namespace Project.Application.Configurations
 {
@@ -22,8 +24,15 @@ namespace Project.Application.Configurations
             services.AddScoped<IUpdateAutorUseCase,  UpdateAutorUseCase>();
             services.AddScoped<IDeleteAutorByIdUseCase, DeleteAutorByIdUseCase>();
 
-            // Services - Autor
+            // Use Cases - Genero
+            services.AddScoped<ICreateGeneroUseCase, CreateGeneroUseCase>();
+            services.AddScoped<IGetAllGenerosUseCase, GetAllGenerosUseCase>();
+            services.AddScoped<IUpdateGeneroUseCase, UpdateGeneroUseCase>();
+            services.AddScoped<IDeleteGeneroByIdUseCase, DeleteGeneroByIdUseCase>();
+
+            // Services
             services.AddScoped<IAutorService, AutorService>();
+            services.AddScoped<IGeneroService, GeneroService>();
 
             return services;
         }

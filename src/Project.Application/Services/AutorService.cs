@@ -1,7 +1,7 @@
 ﻿using Project.Domain.Common;
 using Project.Domain.Entities;
-using Project.Domain.Interfaces.Repositories.Autor;
-using Project.Domain.Interfaces.Services.Autor;
+using Project.Domain.Interfaces.Repositories;
+using Project.Domain.Interfaces.Services;
 
 namespace Project.Application.Services
 {

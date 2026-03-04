@@ -1,7 +1,7 @@
 ﻿using Project.Domain.Common;
 using Project.Domain.Entities;
 
-namespace Project.Domain.Interfaces.Services.Autor
+namespace Project.Domain.Interfaces.Services
 {
     public interface IAutorService
     {

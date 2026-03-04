@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Project.Application.Base;
 using Project.Domain.Common;
 using Project.Domain.Entities;
-using Project.Domain.Interfaces.Services.Autor;
+using Project.Domain.Interfaces.Services;
 using Project.Domain.Interfaces.UseCases.Autor;
 
 namespace Project.Application.UseCases.Autor
