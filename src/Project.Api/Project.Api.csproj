@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>a7fcd44b-2bd4-415b-b1f5-2140e663cdeb</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ViewModel\Dto\NovaPasta\**" />
+    <Compile Remove="ViewModel\Inputs\**" />
+    <Content Remove="ViewModel\Dto\NovaPasta\**" />
+    <Content Remove="ViewModel\Inputs\**" />
+    <EmbeddedResource Remove="ViewModel\Dto\NovaPasta\**" />
+    <EmbeddedResource Remove="ViewModel\Inputs\**" />
+    <None Remove="ViewModel\Dto\NovaPasta\**" />
+    <None Remove="ViewModel\Inputs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
+	  <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	  <PackageReference Include="Npgsql" Version="8.0.3" />
+	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
+	  <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
+	  <PackageReference Include="Serilog.Enrichers.CorrelationId" Version="3.0.1" />
+	  <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+	  <PackageReference Include="Serilog.Sinks.Grafana.Loki" Version="8.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Project.Application\Project.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Validators\" />
+    <Folder Include="ViewModel\Response\" />
+  </ItemGroup>
+
+</Project>
