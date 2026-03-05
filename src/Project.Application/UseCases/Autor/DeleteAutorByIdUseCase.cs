@@ -4,6 +4,7 @@ using Project.Application.Base;
 using Project.Domain.Common;
 using Project.Domain.Interfaces.Services;
 using Project.Domain.Interfaces.UseCases.Autor;
+using System.Net;
 
 namespace Project.Application.UseCases.Autor
 {
@@ -26,9 +27,13 @@ namespace Project.Application.UseCases.Autor
                 return Result.Fail(autor.Message, autor.StatusCode);
             }
 
-            var livro = await _livroService.GetFilteredLivrosAsync(null, id, null);
-            if (livro != null) { 
-                return Result.Fail("Existem livros relacionados a esse autor", System.Net.HttpStatusCode.BadRequest);
+            var livroResult = await _livroService.GetFilteredLivrosAsync(null, id, null);
+
+            var livros = livroResult.Data as IEnumerable<object>;
+
+            if (livros != null && livros.Any())
+            {
+                return Result.Fail("Existem livros relacionados a esse autor", HttpStatusCode.BadRequest);
             }
 
             return await _autorService.DeleteAutorByIdAsync(id);
