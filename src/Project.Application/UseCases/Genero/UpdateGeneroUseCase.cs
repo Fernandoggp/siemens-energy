@@ -17,14 +17,14 @@ namespace Project.Application.UseCases.Genero
             _generoService = generoService;
         }
 
-        public async Task<Result> ExecuteAsync(GeneroEntity Genero)
+        public async Task<Result> ExecuteAsync(GeneroEntity genero)
         {
-            var validationResult = await _generoService.ValidateNameAsync(Genero.Name);
+            var validationResult = await _generoService.ValidateNameAsync(genero.Name);
 
             if (!validationResult.Success)
                 return validationResult;
 
-            return await _generoService.UpdateGeneroAsync(Genero);
+            return await _generoService.UpdateGeneroAsync(genero);
         }
 
     }

@@ -9,5 +9,6 @@ namespace Project.Domain.Interfaces.Repositories
         Task<IEnumerable<AutorEntity>> GetAllAutoresAsync();
         Task<AutorEntity> UpdateAsync(AutorEntity Autor);
         Task<bool> DeleteAutorByIdAsync(Guid id);
+        Task<AutorEntity> GetAutorByIdAsync(Guid id);
     }
 }

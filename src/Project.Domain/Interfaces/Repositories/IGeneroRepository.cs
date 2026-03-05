@@ -9,5 +9,6 @@ namespace Project.Domain.Interfaces.Repositories
         Task<IEnumerable<GeneroEntity>> GetAllGenerosAsync();
         Task<GeneroEntity> UpdateAsync(GeneroEntity Genero);
         Task<bool> DeleteGeneroByIdAsync(Guid id);
+        Task<GeneroEntity> GetGeneroByIdAsync(Guid id);
     }
 }

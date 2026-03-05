@@ -8,7 +8,8 @@ namespace Project.Domain.Interfaces.Services
         Task<Result> ValidateNameAsync(string name);
         Task<Result> CreateAutorAsync(AutorEntity newAutor);
         Task<Result> GetAllAutoresAsync();
-        Task<Result> UpdateAutorAsync(AutorEntity Autor);
+        Task<Result> UpdateAutorAsync(AutorEntity autor);
         Task<Result> DeleteAutorByIdAsync(Guid id);
+        Task<Result> GetAutorByIdAsync(Guid id);
     }
 }

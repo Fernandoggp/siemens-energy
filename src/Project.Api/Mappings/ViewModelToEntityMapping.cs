@@ -1,6 +1,7 @@
 ﻿using Project.Domain.Entities;
 using Project.Api.ViewModel.Dto.Autor;
 using Project.Api.ViewModel.Dto.Genero;
+using Project.Api.ViewModel.Dto.Livro;
 
 namespace Project.Api.Mappings
 {
@@ -39,6 +40,28 @@ namespace Project.Api.Mappings
             {
                 Id = dto.Id,
                 Name = dto.Name
+            };
+        }
+
+        public static LivroEntity MapCreateLivroDtoToEntity(CreateLivroDto dto)
+        {
+            return new LivroEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = dto.Name,
+                AutorId = dto.AutorId,
+                GeneroId = dto.GeneroId
+            };
+        }
+
+        public static LivroEntity MapUpdateLivroDtoToEntity(UpdateLivroDto dto)
+        {
+            return new LivroEntity
+            {
+                Id = dto.Id,
+                Name = dto.Name,
+                AutorId = dto.AutorId,
+                GeneroId = dto.GeneroId
             };
         }
     }

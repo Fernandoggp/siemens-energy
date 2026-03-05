@@ -66,7 +66,17 @@ namespace Project.Application.Services
             var autor = await _autorRepository.DeleteAutorByIdAsync(id);
 
             if (autor is false)
-                return Result.Fail("Autor não encontrado na base de dados para atualização.", System.Net.HttpStatusCode.NotFound);
+                return Result.Fail("Autor não encontrado na base de dados para deleção.", System.Net.HttpStatusCode.NotFound);
+
+            return Result.Ok(autor);
+        }
+
+        public async Task<Result> GetAutorByIdAsync(Guid id)
+        {
+            var autor = await _autorRepository.GetAutorByIdAsync(id);
+
+            if (autor is null)
+                return Result.Fail("Autor não encontrado na base de dados.", System.Net.HttpStatusCode.NotFound);
 
             return Result.Ok(autor);
         }

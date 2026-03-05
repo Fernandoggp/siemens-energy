@@ -62,5 +62,13 @@ namespace Project.Infrastructure.Persistence.Repositories
             return true;
         }
 
+        public async Task<AutorEntity> GetAutorByIdAsync(Guid id)
+        {
+            var autor = await _context.Autores
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            return autor;
+        }
+
     }
 }
