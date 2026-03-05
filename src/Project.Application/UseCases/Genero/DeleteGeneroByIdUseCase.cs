@@ -5,6 +5,7 @@ using Project.Application.Services;
 using Project.Domain.Common;
 using Project.Domain.Interfaces.Services;
 using Project.Domain.Interfaces.UseCases.Genero;
+using System.Net;
 
 namespace Project.Application.UseCases.Genero
 {
@@ -27,10 +28,13 @@ namespace Project.Application.UseCases.Genero
                 return Result.Fail(genero.Message, genero.StatusCode);
             }
 
-            var livro = await _livroService.GetFilteredLivrosAsync(null, null, id);
-            if (livro != null)
+            var livroResult = await _livroService.GetFilteredLivrosAsync(null, null, id);
+
+            var livros = livroResult.Data as IEnumerable<object>;
+
+            if (livros != null && livros.Any())
             {
-                return Result.Fail("Existem livros relacionados a esse genero", System.Net.HttpStatusCode.BadRequest);
+                return Result.Fail("Existem livros relacionados a esse genero", HttpStatusCode.BadRequest);
             }
 
             return await _generoService.DeleteGeneroByIdAsync(id);
