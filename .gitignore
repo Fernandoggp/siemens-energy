@@ -9,5 +9,5 @@ obj/
 *.user
 *.suo
 
-src/Project.Api/appsettings.json
-src/Project.Api/Properties/launchSettings.json
+# src/Project.Api/appsettings.json
+# src/Project.Api/Properties/launchSettings.json
