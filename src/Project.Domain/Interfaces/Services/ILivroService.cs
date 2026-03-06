@@ -5,7 +5,7 @@ namespace Project.Domain.Interfaces.Services
 {
     public interface ILivroService
     {
-        Task<Result> ValidateNameAsync(string name);
+        Task<Result> ValidateNameAsync(string name, Guid? id);
         Task<Result> CreateLivroAsync(LivroEntity newLivro);
         Task<Result> GetAllLivrosAsync();
         Task<Result> GetFilteredLivrosAsync(Guid? livroId, Guid? autorId, Guid? generoId);

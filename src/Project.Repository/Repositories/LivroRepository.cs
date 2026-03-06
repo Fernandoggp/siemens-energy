@@ -14,10 +14,11 @@ namespace Project.Repository.Repositories
             _context = context;
         }
 
-        public async Task<bool> ExistsByNameAsync(string name)
+        public async Task<bool> ExistsByNameAsync(string name, Guid? id = null)
         {
             return await _context.Livros
-                .AnyAsync(a => a.Name == name);
+                .AnyAsync(a => EF.Functions.ILike(a.Name, name) &&
+                               (!id.HasValue || a.Id != id.Value));
         }
 
         public async Task<LivroEntity> CreateAsync(LivroEntity newLivro)

@@ -23,7 +23,7 @@ namespace Project.Application.UseCases
 
         public async Task<Result> ExecuteAsync(LivroEntity newLivro)
         {
-            var validationName = await _livroService.ValidateNameAsync(newLivro.Name);
+            var validationName = await _livroService.ValidateNameAsync(newLivro.Name, null);
 
             if (!validationName.Success)
                 return validationName;

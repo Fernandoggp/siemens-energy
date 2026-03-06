@@ -20,7 +20,7 @@ namespace Project.Application.Services
                 ?? throw new ArgumentNullException(nameof(livroRepository));
         }
 
-        public async Task<Result> ValidateNameAsync(string name)
+        public async Task<Result> ValidateNameAsync(string name, Guid? id)
         {
             if (string.IsNullOrWhiteSpace(name))
                 return Result.Fail("Nome é obrigatório");
@@ -31,9 +31,9 @@ namespace Project.Application.Services
             if (name.Length < 3 || name.Length > 200)
                 return Result.Fail("Nome deve ter entre 3 e 200 caracteres");
 
-            var exists = await _livroRepository.ExistsByNameAsync(name);
+            var exists = await _livroRepository.ExistsByNameAsync(name, id);
 
-            if (exists)
+            if (exists )
                 return Result.Fail("Já existe um livro com esse nome.");
 
             return Result.Ok();
