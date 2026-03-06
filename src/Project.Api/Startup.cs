@@ -28,9 +28,7 @@ namespace Project.Api
             IdentityModelEventSource.ShowPII = true;
 
             services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(
-                    Configuration["ConnectionStrings:DefaultConnection"]
-                ));
+                options.UseNpgsql(Configuration.GetConnectionString("DbConnection")));
 
             services.AddScoped<IAutorRepository, AutorRepository>();
 
@@ -57,14 +55,12 @@ namespace Project.Api
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
         {
-            app.UseCors(builder =>
-            {
-                builder.AllowAnyOrigin()
-                       .AllowAnyMethod()
-                       .AllowAnyHeader();
-            });
+            app.UseApiConfiguration(environment);
 
             app.UseRouting();
+
+            app.UseCors("AllowAll");
+
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -74,7 +70,6 @@ namespace Project.Api
             });
 
             app.UseSwaggerConfiguration();
-            app.UseApiConfiguration(environment);
         }
     }
 }

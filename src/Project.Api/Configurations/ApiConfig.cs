@@ -6,10 +6,17 @@ namespace Project.Api.Configurations
     {
         public static IServiceCollection AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            // Desabilitar validações via DataAnottations
-            services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
+            services.Configure<ApiBehaviorOptions>(options =>
+                options.SuppressModelStateInvalidFilter = true);
 
-            services.AddControllers();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader());
+            });
+
             return services;
         }
 
@@ -17,22 +24,6 @@ namespace Project.Api.Configurations
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
-
-            //app.UseHttpsRedirection();
-
-            app.UseCors(c =>
-            {
-                c.AllowAnyHeader();
-                c.AllowAnyMethod();
-                c.AllowAnyOrigin();
-            });
-
-            app.UseRouting();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
 
             return app;
         }
