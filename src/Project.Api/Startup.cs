@@ -5,6 +5,7 @@ using Project.Application.Configurations;
 using Project.Domain.Interfaces.Repositories;
 using Project.Infrastructure.Persistence.Repositories;
 using Project.Repository.Persistence;
+using System.Text.Json;
 
 namespace Project.Api
 {
@@ -36,8 +37,8 @@ namespace Project.Api
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-                    options.JsonSerializerOptions.DictionaryKeyPolicy = null;
-                    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                    options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+                    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                 });
 
             services.AddHttpContextAccessor();
